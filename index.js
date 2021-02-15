@@ -55,6 +55,10 @@ class Board1D {
                 break;
             case "rook":
                 this.boardSquares[location].piece = new Rook(this.boardSquares[location], team);
+                break;
+            case "bishop":
+                this.boardSquares[location].piece = new Bishop(this.boardSquares[location], team);
+                break;  
         }
         this.boardSquares[location].updateImg()
     }
@@ -89,6 +93,11 @@ class Square{
 
         this.squareDiv.appendChild(this.piece.pieceImg)
     }
+
+    isWhite() {
+        return this.location%2 != 0;
+    }
+
 }
 
 function toggleSelect(square) {
@@ -117,3 +126,4 @@ let Game = new Board1D(BoardDiv);
 
 Game.addPiece(3, "rook", "white")
 Game.addPiece(1, "pawn", "white")
+Game.addPiece(9, "bishop", "black")
