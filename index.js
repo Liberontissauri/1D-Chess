@@ -186,7 +186,7 @@ class Rook extends Piece {
     }
 
     canMove(location) {
-        if (this.square.location < location) {
+        if (this.square.location < location && this.square.location + 3 >= location) {
             
             for (let i = this.square.location + 1 ; i < location; i++) {
                 if (this.square.board.boardSquares[i].piece != null) {
@@ -196,7 +196,7 @@ class Rook extends Piece {
             }
             return true;
 
-        } else if (this.square.location > location) {
+        } else if (this.square.location > location && this.square.location - 3 <= location) {
 
             for (let i = this.square.location - 1 ; i > location; i--) {
                 if (this.square.board.boardSquares[i].piece != null) {
@@ -206,6 +206,8 @@ class Rook extends Piece {
             }
             return true;
 
+        } else {
+            return false;
         }
     }
 
