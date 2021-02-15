@@ -197,7 +197,7 @@ class Rook extends Piece {
             if (this.square.board.boardSquares[location].piece.team == this.team) return false;
         }
 
-        if (this.square.location < location && this.square.location + 3 >= location) {
+        if (this.square.location < location) {
             
             for (let i = this.square.location + 1 ; i < location; i++) {
                 if (this.square.board.boardSquares[i].piece != null) {
@@ -207,7 +207,7 @@ class Rook extends Piece {
             }
             return true;
 
-        } else if (this.square.location > location && this.square.location - 3 <= location) {
+        } else if (this.square.location > location) {
 
             for (let i = this.square.location - 1 ; i > location; i--) {
                 if (this.square.board.boardSquares[i].piece != null) {
