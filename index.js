@@ -133,6 +133,9 @@ class Piece {
             this.square.piece = null;
             this.square.updateImg()
             this.square = this.square.board.boardSquares[location]
+            if (this.square.board.boardSquares[location].piece != null) {
+                this.square.board.boardSquares[location].squareDiv.removeChild(this.square.board.boardSquares[location].piece.pieceImg);
+            }
             this.square.piece = this
             this.square.updateImg()
         }
@@ -235,5 +238,5 @@ class Rook extends Piece {
 
 let Game = new Board1D(BoardDiv);
 
-Game.addPiece(8, "rook", "white")
-Game.addPiece(1, "pawn", "black")
+Game.addPiece(3, "rook", "white")
+Game.addPiece(1, "pawn", "white")
