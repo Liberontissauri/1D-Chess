@@ -205,3 +205,81 @@ class Knight extends Piece {
         return img;
     }
 }
+
+class Queen extends Piece {
+    constructor(square, team) {
+        super(square, team);
+        this.name = "queen";
+        this.pieceImg = this.setupImg();
+    }
+
+    canMove(location) {
+        if (this.square.board.boardSquares[location].piece != null ) {
+            if (this.square.board.boardSquares[location].piece.team == this.team) return false;
+        }
+
+        if (this.square.isWhite() == this.square.board.boardSquares[location].isWhite()) {
+            console.log("hey")
+            if (this.square.location < location) {
+            
+                for (let i = this.square.location + 1 ; i < location; i++) {
+                    if (this.square.board.boardSquares[i].piece != null && this.square.isWhite() == this.square.board.boardSquares[i].isWhite()) {
+    
+                        return false;
+                    }
+                }
+                return true;
+    
+            } else if (this.square.location > location) {
+    
+                for (let i = this.square.location - 1 ; i > location; i--) {
+                    if (this.square.board.boardSquares[i].piece != null && this.square.isWhite() == this.square.board.boardSquares[i].isWhite()) {
+                        
+                        return false;
+                    }
+                }
+                return true;
+    
+            } else {
+                return false;
+            }
+        }
+
+        if (this.square.location < location) {
+            
+            for (let i = this.square.location + 1 ; i < location; i++) {
+                if (this.square.board.boardSquares[i].piece != null) {
+
+                    return false;
+                }
+            }
+            return true;
+
+        } else if (this.square.location > location) {
+
+            for (let i = this.square.location - 1 ; i > location; i--) {
+                if (this.square.board.boardSquares[i].piece != null) {
+                    
+                    return false;
+                }
+            }
+            return true;
+
+        } else {
+            return false;
+        }
+    }
+
+    setupImg() {
+        let img = document.createElement("img");
+        img.src = "./img/pieces/chess-queen.png";
+        img.classList.add("iconPiece");
+        if (this.team == "black") {
+            img.classList.add("blackPiece");
+        } else {
+            img.classList.add("whitePiece");
+        }
+
+        return img;
+    }
+}

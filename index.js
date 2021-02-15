@@ -62,6 +62,9 @@ class Board1D {
             case "knight":
                 this.boardSquares[location].piece = new Knight(this.boardSquares[location], team);
                 break;  
+            case "queen":
+                this.boardSquares[location].piece = new Queen(this.boardSquares[location], team);
+                break;  
         }
         this.boardSquares[location].updateImg()
     }
@@ -129,4 +132,4 @@ let Game = new Board1D(BoardDiv);
 
 Game.addPiece(3, "rook", "white")
 Game.addPiece(1, "pawn", "white")
-Game.addPiece(9, "knight", "black")
+Game.addPiece(9, "queen", "black")
