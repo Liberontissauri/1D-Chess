@@ -124,7 +124,7 @@ class Rook extends Piece {
 class Bishop extends Piece {
     constructor(square, team) {
         super(square, team);
-        this.name = "rook";
+        this.name = "bishop";
         this.pieceImg = this.setupImg();
     }
 
@@ -163,6 +163,38 @@ class Bishop extends Piece {
     setupImg() {
         let img = document.createElement("img");
         img.src = "./img/pieces/chess-bishop.png";
+        img.classList.add("iconPiece");
+        if (this.team == "black") {
+            img.classList.add("blackPiece");
+        } else {
+            img.classList.add("whitePiece");
+        }
+
+        return img;
+    }
+}
+
+class Knight extends Piece {
+    constructor(square, team) {
+        super(square, team);
+        this.name = "knight";
+        this.pieceImg = this.setupImg()
+    }
+
+    canMove(location) {
+        if (this.square.board.boardSquares[location].piece != null ) {
+            if (this.square.board.boardSquares[location].piece.team == this.team) return false;
+        }
+        if ((Math.abs(this.square.location - location) == 2 || Math.abs(this.square.location - location) == 3) && location >= 0 && location <=15) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    setupImg() {
+        let img = document.createElement("img");
+        img.src = "./img/pieces/chess-knight.png";
         img.classList.add("iconPiece");
         if (this.team == "black") {
             img.classList.add("blackPiece");
