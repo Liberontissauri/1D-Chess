@@ -137,6 +137,16 @@ class Piece {
             this.square.updateImg()
         }
     }
+
+    updateTeamColour (img){
+        if (this.team = "white") {
+            classList.remove("blackPiece");
+            classList.add("whitePiece");
+        } else {
+            classList.remove("whitePiece");
+            classList.add("blackPiece");
+        }
+    }
 }
 
 class Pawn extends Piece {
@@ -195,7 +205,7 @@ class Rook extends Piece {
                 }
             }
             return true;
-            
+
         }
     }
 
@@ -215,5 +225,5 @@ class Rook extends Piece {
 
 let Game = new Board1D(BoardDiv);
 
-Game.addPiece(8, "rook")
-Game.addPiece(1, "pawn")
+Game.addPiece(8, "rook", "white")
+Game.addPiece(1, "pawn", "black")

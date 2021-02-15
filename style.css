@@ -56,3 +56,11 @@ body {
     width: 60px;
     height: 60px;
 }
+
+.blackPiece {
+    filter: invert(0%);
+}
+
+.whitePiece {
+    filter: invert(100%);
+}
