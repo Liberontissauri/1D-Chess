@@ -157,6 +157,10 @@ class Pawn extends Piece {
     }
 
     canMove(location) {
+        if (this.square.board.boardSquares[location].piece != null ) {
+            if (this.square.board.boardSquares[location].piece.team == this.team) return false;
+        }
+
         if (Math.abs(this.square.location - location) == 1 && location >= 0 && location <=15) {
             return true;
         } else {
@@ -186,6 +190,10 @@ class Rook extends Piece {
     }
 
     canMove(location) {
+        if (this.square.board.boardSquares[location].piece != null ) {
+            if (this.square.board.boardSquares[location].piece.team == this.team) return false;
+        }
+
         if (this.square.location < location && this.square.location + 3 >= location) {
             
             for (let i = this.square.location + 1 ; i < location; i++) {
