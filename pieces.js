@@ -145,7 +145,7 @@ class Bishop extends Piece {
             if (this.square.board.boardSquares[location].piece.team == this.team) return false;
         }
 
-        if (this.square.isWhite() != this.square.board.boardSquares[location].isWhite()) return false;
+        if (this.square.isWhite() != this.square.board.boardSquares[location].isWhite() || Math.abs(this.square.location - location) > 4) return false;
 
         if (this.square.location < location) {
             
@@ -229,9 +229,9 @@ class Queen extends Piece {
         if (this.square.board.boardSquares[location].piece != null ) {
             if (this.square.board.boardSquares[location].piece.team == this.team) return false;
         }
-
+        if (this.square.isWhite() != this.square.board.boardSquares[location].isWhite() || Math.abs(this.square.location - location) > 4) return false;
+        
         if (this.square.isWhite() == this.square.board.boardSquares[location].isWhite()) {
-            console.log("hey")
             if (this.square.location < location) {
             
                 for (let i = this.square.location + 1 ; i < location; i++) {
