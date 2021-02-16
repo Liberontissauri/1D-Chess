@@ -1,0 +1,66 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#Board {
+    display: flex;
+    flex-direction: row;
+
+    width: auto;
+    height: auto;
+
+    padding: 4px;
+    border: 5px solid rgb(192, 164, 164);
+
+}
+
+.boardSquare {
+    width: 80px;
+    height: 80px;
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.boardSquare:hover {
+    cursor: pointer;
+}
+
+.darkSquare {
+    background-color: rgb(75, 75, 75)
+}
+
+.lightSquare {
+    background-color: rgb(245, 223, 189)
+}
+
+.selectedSquare {
+    background-color: rgb(55, 57, 151)
+}
+
+.iconPiece {
+    width: 60px;
+    height: 60px;
+}
+
+.blackPiece {
+    filter: invert(0%);
+}
+
+.whitePiece {
+    filter: invert(100%);
+}
