@@ -156,7 +156,18 @@ function toggleSelect(square) {
 
 let Game = new Board1D(BoardDiv);
 
-Game.addPiece(6, "king", "black")
-Game.addPiece(8, "king", "white")
-Game.addPiece(14, "pawn", "black")
-Game.addPiece(1, "pawn", "white")
+
+Game.addPiece(0, "king", "white")
+Game.addPiece(1, "queen", "white")
+Game.addPiece(2, "rook", "white")
+Game.addPiece(3, "bishop", "white")
+Game.addPiece(4, "knight", "white")
+Game.addPiece(5, "pawn", "white")
+
+Game.addPiece(10, "pawn", "black")
+Game.addPiece(11, "knight", "black")
+Game.addPiece(12, "bishop", "black")
+Game.addPiece(13, "rook", "black")
+Game.addPiece(14, "queen", "black")
+Game.addPiece(15, "king", "black")
+
