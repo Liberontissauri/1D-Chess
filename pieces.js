@@ -15,9 +15,21 @@ class Piece {
 
     move(location) {
         if(this.canMove(location)) {
+            let prevLocation = this.square.location;
             this.square.piece = null;
-            this.square.updateImg()
-            this.square = this.square.board.boardSquares[location]
+            this.square.updateImg();
+            this.square = this.square.board.boardSquares[location];
+
+            // This call for the check function shouldnt be here, should be on the CanMove function, but it's the only way I found to do it
+            // if you come across this and know a better way to do it, it would be great.
+
+            // It isn't in the CanMove function because that would cause that same function to loop infinitely, since checkForCheck uses the CanMove Function, and the CanMove function would use checkForCheck
+
+            // Here we interrupt the move process to check for a Check on one of the kings, if a Check is found, we then undo the transfer process
+            // to revert the position of the piece to it's previous positon.
+            if (this.square.board.checkForCheck()) {
+                this.square = this.square.board.boardSquares[prevLocation];
+            }
             if (this.square.board.boardSquares[location].piece != null) {
                 this.square.board.boardSquares[location].squareDiv.removeChild(this.square.board.boardSquares[location].piece.pieceImg);
             }
@@ -273,6 +285,39 @@ class Queen extends Piece {
     setupImg() {
         let img = document.createElement("img");
         img.src = "./img/pieces/chess-queen.png";
+        img.classList.add("iconPiece");
+        if (this.team == "black") {
+            img.classList.add("blackPiece");
+        } else {
+            img.classList.add("whitePiece");
+        }
+
+        return img;
+    }
+}
+
+class King extends Piece {
+    constructor(square, team) {
+        super(square, team);
+        this.name = "king";
+        this.pieceImg = this.setupImg()
+    }
+
+    canMove(location) {
+        if (this.square.board.boardSquares[location].piece != null ) {
+            if (this.square.board.boardSquares[location].piece.team == this.team) return false;
+        }
+
+        if (Math.abs(this.square.location - location) == 1 && location >= 0 && location <=15) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    setupImg() {
+        let img = document.createElement("img");
+        img.src = "./img/pieces/chess-king.png";
         img.classList.add("iconPiece");
         if (this.team == "black") {
             img.classList.add("blackPiece");

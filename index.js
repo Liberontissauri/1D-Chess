@@ -8,6 +8,12 @@ class Board1D {
         this.selectedSquaresNumber = 0;
         this.selectedSquare = null;
 
+        this.whitePieces = [];
+        this.blackPieces = [];
+
+        this.whiteKing = undefined;
+        this.blackKing = undefined;
+
         this.generateSquares();
     }
 
@@ -64,9 +70,29 @@ class Board1D {
                 break;  
             case "queen":
                 this.boardSquares[location].piece = new Queen(this.boardSquares[location], team);
-                break;  
+                break;
+            case "king":
+                this.boardSquares[location].piece = new King(this.boardSquares[location], team);
+                break;
+        }
+        if (team == "white") {
+            if (piece_name == "king") this.whiteKing = this.boardSquares[location].piece
+            this.whitePieces.push(this.boardSquares[location].piece);
+        } else {
+            if (piece_name == "king") this.blackKing = this.boardSquares[location].piece
+            this.whitePieces.push(this.boardSquares[location].piece);
         }
         this.boardSquares[location].updateImg()
+    }
+
+    checkForCheck() {
+        for (let i=0; i < this.boardSquares.length; i++) {
+            if(this.boardSquares[i].piece != null) {
+                console.log(this.boardSquares[i].piece)
+                if (this.boardSquares[i].piece.team == "white" && this.boardSquares[i].piece.canMove(this.blackKing.square.location)) return true;
+                if (this.boardSquares[i].piece.team == "black" && this.boardSquares[i].piece.canMove(this.whiteKing.square.location)) return true;
+            }
+        }
     }
 
 }
@@ -130,6 +156,7 @@ function toggleSelect(square) {
 
 let Game = new Board1D(BoardDiv);
 
-Game.addPiece(3, "rook", "white")
+Game.addPiece(6, "king", "black")
+Game.addPiece(8, "king", "white")
+Game.addPiece(14, "pawn", "black")
 Game.addPiece(1, "pawn", "white")
-Game.addPiece(9, "queen", "black")
