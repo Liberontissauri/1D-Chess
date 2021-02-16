@@ -1,0 +1,23 @@
+{
+  "name": "1D-Chess",
+  "version": "1.0.0",
+  "description": "Have you ever heard of 1D Chess? As the name says, it's chess played in a single dimension, in a single row of squares.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Liberontissauri/1D-Chess.git"
+  },
+  "keywords": [],
+  "author": "Liberontissauri",
+  "license": "GNU 3",
+  "bugs": {
+    "url": "https://github.com/Liberontissauri/1D-Chess/issues"
+  },
+  "homepage": "https://github.com/Liberontissauri/1D-Chess#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
