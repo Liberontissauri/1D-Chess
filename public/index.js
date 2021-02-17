@@ -85,12 +85,12 @@ class Board1D {
         this.boardSquares[location].updateImg()
     }
 
-    checkForCheck() {
+    checkForCheck(moveTeam) {
         for (let i=0; i < this.boardSquares.length; i++) {
             if(this.boardSquares[i].piece != null) {
-                console.log(this.boardSquares[i].piece)
-                if (this.boardSquares[i].piece.team == "white" && this.boardSquares[i].piece.canMove(this.blackKing.square.location)) return true;
-                if (this.boardSquares[i].piece.team == "black" && this.boardSquares[i].piece.canMove(this.whiteKing.square.location)) return true;
+                
+                if (this.boardSquares[i].piece.team == "white" && moveTeam != this.boardSquares[i].piece.team && this.boardSquares[i].piece.canMove(this.blackKing.square.location)) return true;
+                if (this.boardSquares[i].piece.team == "black" && moveTeam != this.boardSquares[i].piece.team && this.boardSquares[i].piece.canMove(this.whiteKing.square.location)) return true;
             }
         }
     }
@@ -122,8 +122,12 @@ class Square{
             this.squareDiv.removeChild(this.squareDiv.firstChild);
             return;
         }
-
-        this.squareDiv.appendChild(this.piece.pieceImg)
+        
+        if(this.piece != null)  {
+            if(this.squareDiv.firstChild != undefined) this.squareDiv.removeChild(this.squareDiv.firstChild);
+            this.squareDiv.appendChild(this.piece.pieceImg)
+        }
+        
     }
 
     isWhite() {
@@ -158,5 +162,11 @@ let Game = new Board1D(BoardDiv);
 
 
 
-Game.addPiece(3, "queen", "white")
+Game.addPiece(0, "rook", "white")
+Game.addPiece(6, "king", "black")
+Game.addPiece(8, "king", "white")
+Game.addPiece(14, "pawn", "black")
+Game.addPiece(1, "pawn", "white")
+Game.addPiece(2, "bishop", "black")
+
 

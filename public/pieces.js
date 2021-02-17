@@ -15,26 +15,28 @@ class Piece {
 
     move(location) {
         if(this.canMove(location)) {
-            let prevLocation = this.square.location;
+            let prev_location = this.square.location;
+            let board = this.square.board
             this.square.piece = null;
-            this.square.updateImg();
-            this.square = this.square.board.boardSquares[location];
+            this.square = null;
 
-            // This call for the check function shouldnt be here, should be on the CanMove function, but it's the only way I found to do it
-            // if you come across this and know a better way to do it, it would be great.
+            // This is a horrible solution, but we basically temporarily move the piece to it's next position, check if there is a check,
+            // If there is one, we move the piece to its previous position and proceed, if there isn't a check, we update the images to 
+            // Display the moved pieces, and make the temporary movement permanent.
 
-            // It isn't in the CanMove function because that would cause that same function to loop infinitely, since checkForCheck uses the CanMove Function, and the CanMove function would use checkForCheck
+            board.boardSquares[location].piece = this;
+            this.square = board.boardSquares[location];
 
-            // Here we interrupt the move process to check for a Check on one of the kings, if a Check is found, we then undo the transfer process
-            // to revert the position of the piece to it's previous positon.
-            if (this.square.board.checkForCheck()) {
-                this.square = this.square.board.boardSquares[prevLocation];
+            if(board.checkForCheck(this.team)){
+                this.square.piece = null;
+                this.square = null;
+
+                board.boardSquares[prev_location].piece = this;
+                this.square = board.boardSquares[prev_location];
+            } else {
+                board.boardSquares[location].updateImg()
+                board.boardSquares[prev_location].updateImg()
             }
-            if (this.square.board.boardSquares[location].piece != null) {
-                this.square.board.boardSquares[location].squareDiv.removeChild(this.square.board.boardSquares[location].piece.pieceImg);
-            }
-            this.square.piece = this
-            this.square.updateImg()
         }
     }
 
