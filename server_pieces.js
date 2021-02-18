@@ -15,36 +15,25 @@ class Piece {
 
     move(location) {
         if(this.canMove(location)) {
-            let prevLocation = this.square.location;
+            let prev_location = this.square.location;
+            let board = this.square.board
             this.square.piece = null;
-            this.square.updateImg();
-            this.square = this.square.board.boardSquares[location];
+            this.square = null;
 
-            // This call for the check function shouldnt be here, should be on the CanMove function, but it's the only way I found to do it
-            // if you come across this and know a better way to do it, it would be great.
+            // This is a horrible solution, but we basically temporarily move the piece to it's next position, check if there is a check,
+            // If there is one, we move the piece to its previous position and proceed, if there isn't a check, we update the images to 
+            // Display the moved pieces, and make the temporary movement permanent.
 
-            // It isn't in the CanMove function because that would cause that same function to loop infinitely, since checkForCheck uses the CanMove Function, and the CanMove function would use checkForCheck
+            board.boardSquares[location].piece = this;
+            this.square = board.boardSquares[location];
 
-            // Here we interrupt the move process to check for a Check on one of the kings, if a Check is found, we then undo the transfer process
-            // to revert the position of the piece to it's previous positon.
-            if (this.square.board.checkForCheck()) {
-                this.square = this.square.board.boardSquares[prevLocation];
+            if(board.checkForCheck(this.team)){
+                this.square.piece = null;
+                this.square = null;
+
+                board.boardSquares[prev_location].piece = this;
+                this.square = board.boardSquares[prev_location];
             }
-            if (this.square.board.boardSquares[location].piece != null) {
-                this.square.board.boardSquares[location].squareDiv.removeChild(this.square.board.boardSquares[location].piece.pieceImg);
-            }
-            this.square.piece = this
-            this.square.updateImg()
-        }
-    }
-
-    updateTeamColour (img){
-        if (this.team = "white") {
-            classList.remove("blackPiece");
-            classList.add("whitePiece");
-        } else {
-            classList.remove("whitePiece");
-            classList.add("blackPiece");
         }
     }
 }
@@ -53,7 +42,6 @@ class Pawn extends Piece {
     constructor(square, team) {
         super(square, team);
         this.name = "pawn";
-        this.pieceImg = this.setupImg()
     }
 
     canMove(location) {
@@ -86,7 +74,6 @@ class Rook extends Piece {
     constructor(square, team) {
         super(square, team);
         this.name = "rook";
-        this.pieceImg = this.setupImg();
     }
 
     canMove(location) {
@@ -118,26 +105,12 @@ class Rook extends Piece {
             return false;
         }
     }
-
-    setupImg() {
-        let img = document.createElement("img");
-        img.src = "./img/pieces/chess-rook.png";
-        img.classList.add("iconPiece");
-        if (this.team == "black") {
-            img.classList.add("blackPiece");
-        } else {
-            img.classList.add("whitePiece");
-        }
-
-        return img;
-    }
 }
 
 class Bishop extends Piece {
     constructor(square, team) {
         super(square, team);
         this.name = "bishop";
-        this.pieceImg = this.setupImg();
     }
 
     canMove(location) {
@@ -171,26 +144,12 @@ class Bishop extends Piece {
             return false;
         }
     }
-
-    setupImg() {
-        let img = document.createElement("img");
-        img.src = "./img/pieces/chess-bishop.png";
-        img.classList.add("iconPiece");
-        if (this.team == "black") {
-            img.classList.add("blackPiece");
-        } else {
-            img.classList.add("whitePiece");
-        }
-
-        return img;
-    }
 }
 
 class Knight extends Piece {
     constructor(square, team) {
         super(square, team);
         this.name = "knight";
-        this.pieceImg = this.setupImg()
     }
 
     canMove(location) {
@@ -203,26 +162,12 @@ class Knight extends Piece {
             return false;
         }
     }
-
-    setupImg() {
-        let img = document.createElement("img");
-        img.src = "./img/pieces/chess-knight.png";
-        img.classList.add("iconPiece");
-        if (this.team == "black") {
-            img.classList.add("blackPiece");
-        } else {
-            img.classList.add("whitePiece");
-        }
-
-        return img;
-    }
 }
 
 class Queen extends Piece {
     constructor(square, team) {
         super(square, team);
         this.name = "queen";
-        this.pieceImg = this.setupImg();
     }
 
     canMove(location) {
@@ -281,26 +226,12 @@ class Queen extends Piece {
             return false;
         }
     }
-
-    setupImg() {
-        let img = document.createElement("img");
-        img.src = "./img/pieces/chess-queen.png";
-        img.classList.add("iconPiece");
-        if (this.team == "black") {
-            img.classList.add("blackPiece");
-        } else {
-            img.classList.add("whitePiece");
-        }
-
-        return img;
-    }
 }
 
 class King extends Piece {
     constructor(square, team) {
         super(square, team);
         this.name = "king";
-        this.pieceImg = this.setupImg()
     }
 
     canMove(location) {
@@ -314,17 +245,12 @@ class King extends Piece {
             return false;
         }
     }
-
-    setupImg() {
-        let img = document.createElement("img");
-        img.src = "./img/pieces/chess-king.png";
-        img.classList.add("iconPiece");
-        if (this.team == "black") {
-            img.classList.add("blackPiece");
-        } else {
-            img.classList.add("whitePiece");
-        }
-
-        return img;
-    }
 }
+
+module.exports.Piece = Piece;
+module.exports.Pawn = Pawn;
+module.exports.Rook = Rook;
+module.exports.Bishop = Bishop;
+module.exports.Knight = Knight;
+module.exports.Queen = Queen;
+module.exports.King = King;
