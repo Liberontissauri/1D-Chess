@@ -35,6 +35,13 @@ class Board1D {
             this.boardSquares[i] = new Square(this, i)
         }
     }
+
+    cleanBoard() {
+        this.boardSquares.forEach(square => {
+            square.cleanSquare();
+        });
+    }
+
     getSelected() {
         this.boardSquares.forEach(square => {
             if (square.selected == true) {
@@ -95,6 +102,15 @@ class Board1D {
         }
     }
 
+    updateBoard(piece_array) {
+        this.cleanBoard();
+        this.boardSquares.forEach(square => {
+            if (piece_array[square.location] != null) {
+                this.addPiece(square.location, piece_array[square.location].name)
+            }
+        });
+    }
+
 }
 
 class Square{
@@ -122,12 +138,20 @@ class Square{
             this.squareDiv.removeChild(this.squareDiv.firstChild);
             return;
         }
-        
+
         if(this.piece != null)  {
             if(this.squareDiv.firstChild != undefined) this.squareDiv.removeChild(this.squareDiv.firstChild);
             this.squareDiv.appendChild(this.piece.pieceImg)
         }
         
+    }
+
+    cleanSquare() {
+        if(this.piece != null) {
+            this.piece.square = null;
+            this.piece = null;
+            this.updateImg();
+        }
     }
 
     isWhite() {
@@ -158,15 +182,36 @@ function toggleSelect(square) {
     }
 }
 
+class ServerCommunication {
+    constructor(board) {
+        this.socket = io();
+        this.board = board;
+
+        this.clientID = socket.id;
+
+        this.setupReceiveBoard();
+    }
+
+    setupReceiveBoard() {
+        this.socket.on("sendBoard", (piece_array) => {
+            console.log(piece_array);
+            this.board.updateBoard(piece_array);
+        });
+    }
+
+    requestBoard(serverID) {
+        this.socket.emit("requestBoard", {playerID: this.clientID, serverID: serverID})
+    }
+
+    generateID(length) {
+        let ID = "";
+        for (let i=0; i < length; i++) {
+            ID += Math.floor(Math.random() * 10);
+        }
+        return ID;
+    }
+}
+
 let Game = new Board1D(BoardDiv);
 
-
-
-Game.addPiece(0, "rook", "white")
-Game.addPiece(6, "king", "black")
-Game.addPiece(8, "king", "white")
-Game.addPiece(14, "pawn", "black")
-Game.addPiece(1, "pawn", "white")
-Game.addPiece(2, "bishop", "black")
-
-
+let Communication = new ServerCommunication(Game);

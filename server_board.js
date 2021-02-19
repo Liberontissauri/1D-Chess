@@ -81,15 +81,22 @@ class Board1D {
         }
     }
 
+    getPieces() {
+        let piece_array = []
+        this.boardSquares.forEach(square => {
+            let piece = {};
+            if (square.piece != null) {
+                piece["name"] = square.piece.name;
+                piece["team"] = square.piece.team;
+            } else {
+                piece = null;
+            }
+            
+            piece_array[square.location] = piece;
+        });
+        return piece_array;
+    }
+
 }
 
-
-let Game = new Board1D();
-
-
-
-Game.addPiece(0, "rook", "white")
-Game.addPiece(6, "king", "black")
-Game.addPiece(8, "king", "white")
-Game.addPiece(14, "pawn", "black")
-Game.addPiece(1, "pawn", "white")
+module.exports.Board1D = Board1D;
