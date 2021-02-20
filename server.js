@@ -1,7 +1,7 @@
-let express = require("express");
-let board = require("./server_board")
-let fs = require("fs");
-const serveStatic = require("serve-static");
+const express = require("express");
+const board = require("./server_board")
+const fs = require("fs");
+const path = require("path")
 const PORT = process.env.PORT || 3000;
 
 const app = express();
@@ -9,7 +9,25 @@ const app = express();
 const server = require("http").createServer(app);
 const io = require('socket.io')(server);
 
-app.use(express.static("./public"));
+app.use(express.static(path.join(__dirname + '/public')));
+
+app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname + '/public/main_menu/index.html'));
+})
+
+app.get("/room/:room", (req, res) => {
+    let serverID = req.params.room;
+
+    if(isNaN(serverID)) {
+        res.status(400);
+        res.send("Room must be Number")
+    } else if(Game.serverList[serverID] == undefined){
+        res.status(404);
+        res.send("Room Not Found");
+    } else {
+        res.sendFile(path.join(__dirname + '/public/ingame/index.html'));
+    }
+})
 
 class GameServers  {
     constructor(socket) {
@@ -23,6 +41,7 @@ class GameServers  {
             this.setupRequestBoard(socket);
             this.setupJoinServer(socket);
             this.setupRequestMove(socket);
+            this.setupCreateServer(socket);
         })
         
     }
@@ -58,6 +77,8 @@ class GameServers  {
             }
         }
         this.serverList[ID] = Server;
+
+        console.log(`[${"User"}] Server Created [${Server.serverID}]`);
     }
 
     getServer(ID) {
@@ -66,6 +87,13 @@ class GameServers  {
 
     getServerList() {
         return this.serverList;
+    }
+
+    setupCreateServer(socket){
+        socket.on("createServer", (req) => {
+            let serverID = req.serverID;
+            this.createServer(serverID);
+        })
     }
 
     setupJoinServer(socket){
