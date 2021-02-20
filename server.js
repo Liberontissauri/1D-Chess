@@ -33,6 +33,10 @@ class GameServers  {
         Server.board = new board.Board1D();
         Server.connectedPlayers = [];
         Server.serverID = ID;
+        Server.addPiece = function (location, piece_name, team) {
+            Server.board.addPiece(location, piece_name, team);
+            console.log(`[${"Server"}] Added ${piece_name} to the position ${location} on team ${team}`);
+        }
         this.serverList[ID] = Server;
     }
 
@@ -108,7 +112,7 @@ let Game = new GameServers(io);
 
 Game.createServer("123456");
 
-Game.getServer("123456").board.addPiece(0,"rook", "white");
+Game.getServer("123456").addPiece(0,"rook", "white");
 
 
 
