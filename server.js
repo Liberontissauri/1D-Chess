@@ -21,6 +21,7 @@ class GameServers  {
         io.on("connection", socket => {
             console.log(`[${socket.id}] Connected`)
             this.setupRequestBoard(socket);
+            this.setupJoinServer(socket);
         })
         
     }
@@ -37,9 +38,22 @@ class GameServers  {
         return this.serverList[ID];
     }
 
+    setupJoinServer(socket){
+        console.log(`[${socket.id}] Setted up JoinServer socket`);
+        socket.on("joinServer", (req) => {
+            let playerID = socket.id;
+            let serverID = req.serverID;
+
+            this.joinPlayer(playerID, serverID);
+
+            console.log(`[${playerID}] Joined Server [${serverID}]`)
+            this.socket.emit("joinedGame", {confirmation : true, serverID: serverID, playerID: playerID});
+        })
+    }
+
     joinPlayer(player_ID, server_ID) {
         this.playerList.player_ID = this.serverList[server_ID];
-        this.serverList.server_ID.connectedPlayers.push(player_ID);
+        this.serverList[server_ID].connectedPlayers.push(player_ID);
     }
 
     setupRequestBoard(socket) {
@@ -47,10 +61,17 @@ class GameServers  {
         socket.on("requestBoard", (req) => {
             let playerID = socket.id;
             let serverID = req.serverID;
-            let board = this.serverList[serverID].board.getPieces()
+            if(this.serverList[serverID].connectedPlayers.includes(playerID)) {
+                let board = this.serverList[serverID].board.getPieces()
 
-            console.log(`[${playerID}] Requested Board from Server [${serverID}]`)
-            this.socket.emit("sendBoard", board);
+                console.log(`[${playerID}] Requested Board from Server [${serverID}]`)
+                this.socket.emit("sendBoard", {error: "None", piece_array: board, serverID: serverID, playerID: playerID});
+            } else {
+                console.log(`[${playerID}] Tried to Request Board from Server But it's not Connected [${serverID}]`)
+                this.socket.emit("sendBoard", {error: "Not in Server", serverID: serverID, playerID: playerID});
+            }
+
+            
         })
     }
 

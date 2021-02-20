@@ -187,20 +187,39 @@ class ServerCommunication {
         this.socket = io();
         this.board = board;
 
-        this.clientID = socket.id;
+        this.clientID = this.socket.id;
 
         this.setupReceiveBoard();
+        this.setupConfirmJoinServer();
     }
 
     setupReceiveBoard() {
-        this.socket.on("sendBoard", (piece_array) => {
-            console.log(piece_array);
-            this.board.updateBoard(piece_array);
+        this.socket.on("sendBoard", (req) => {
+            if (req.error == "None") {
+                this.board.updateBoard(req.piece_array);
+            } else {
+                switch(req.error) {
+                    case "Not in Server":
+                        console.log(`[${req.playerID}] Failed to Request the Board because the player is not in Server [${req.serverID}]`);
+                        break;
+                }
+            }
+            
         });
     }
 
+    setupConfirmJoinServer() {
+        this.socket.on("joinedGame", (req) => {
+            console.log(`[${req.playerID}] Successfully Joined Server [${req.serverID}]`)
+        });
+    }
+
+    joinServer(serverID) {
+        this.socket.emit("joinServer", {serverID: serverID})
+    }
+
     requestBoard(serverID) {
-        this.socket.emit("requestBoard", {playerID: this.clientID, serverID: serverID})
+        this.socket.emit("requestBoard", {serverID: serverID})
     }
 
     generateID(length) {
