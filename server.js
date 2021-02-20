@@ -15,8 +15,9 @@ app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname + '/public/main_menu/index.html'));
 })
 
-app.get("/room/:room", (req, res) => {
+app.get("/room/:team/:room", (req, res) => {
     let serverID = req.params.room;
+    let team = req.params.team;
 
     if(isNaN(serverID)) {
         res.status(400);
@@ -102,11 +103,21 @@ class GameServers  {
             let playerID = socket.id;
             let serverID = req.serverID;
             let team = req.team;
+            console.log(team + " - " + this.serverList[serverID].whiteTeam + " - " + this.serverList[serverID].blackTeam)
+            if(team == "white" && this.serverList[serverID].whiteTeam != null && this.serverList[serverID].blackTeam == null) {
+                console.log("changeBlack")
+                team = "black";
+            } else if(team == "black" && this.serverList[serverID].blackTeam != null && this.serverList[serverID].whiteTeam == null) {
+                console.log("changeWhite")
+                team = "white";
+            } else if(this.serverList[serverID].blackTeam != null && this.serverList[serverID].whiteTeam != null){
+                team = "spectator";
+            }
 
             this.joinPlayerToServer(playerID, serverID, team, socket);
 
             console.log(`[${playerID}] Joined Server [${serverID}]`)
-            this.socket.emit("joinedGame", {confirmation : true, serverID: serverID, playerID: playerID});
+            this.socket.emit("joinedGame", {confirmation : true, serverID: serverID, playerID: playerID, team:team});
         })
     }
 

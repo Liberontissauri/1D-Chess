@@ -243,17 +243,28 @@ const teamLabel = document.querySelector("#teamLabel");
 
 let pathname = window.location.pathname;
 
+let team = "white";
+
+if(pathname.includes("black")) {
+    team = "black";
+}
+
 pathname = pathname.slice(-6);
 
 let Game = new Board1D(BoardDiv);
 
-let Communication = new ServerCommunication(Game, pathname);
+let Communication = new ServerCommunication(Game, pathname, team);
 
-if(Communication.team == "white") {
-    teamLabel.textContent = "White Team";
-} else {
-    teamLabel.textContent = "Black Team";
-}
+// We use a timeout because the team response takes some time to reach the client
+setTimeout(() => {
+    if(Communication.team == "white") {
+        teamLabel.textContent = "White Team";
+    } else if (Communication.team == "black"){
+        teamLabel.textContent = "Black Team";
+    } else {
+        teamLabel.textContent = "Spectator Team"
+    }
+}, 600);
 
 Communication.requestBoard(pathname);
 

@@ -34,6 +34,7 @@ class ServerCommunication {
 
     setupConfirmJoinServer() {
         this.socket.on("joinedGame", (req) => {
+            this.team = req.team;
             console.log(`[${req.playerID}] Successfully Joined Server [${req.serverID}]`)
         });
     }
