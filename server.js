@@ -63,13 +63,16 @@ class GameServers  {
             let playerID = socket.id;
             let serverID = req.serverID;
             if(this.serverList[serverID].connectedPlayers.includes(playerID)) {
-                let board = this.serverList[serverID].board.getPieces()
 
+                let board = this.serverList[serverID].board.getPieces()
                 console.log(`[${playerID}] Requested Board from Server [${serverID}]`)
                 this.socket.emit("sendBoard", {error: "None", piece_array: board, serverID: serverID, playerID: playerID});
+
             } else {
+                
                 console.log(`[${playerID}] Tried to Request Board from Server But it's not Connected [${serverID}]`)
                 this.socket.emit("sendBoard", {error: "Not in Server", serverID: serverID, playerID: playerID});
+
             }
 
             
