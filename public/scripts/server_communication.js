@@ -1,12 +1,13 @@
 class ServerCommunication {
-    constructor(board, serverID = null) {
+    constructor(board, serverID = null, team = "white") {
         this.socket = io();
         this.board = board;
+        this.team = team;
 
         this.clientID = this.socket.id;
 
         if(serverID != null) {
-            this.joinServer(serverID, "white");
+            this.joinServer(serverID, team);
         }
 
         if(this.board != null) {

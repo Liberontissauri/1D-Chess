@@ -239,6 +239,8 @@ function toggleSelect(square) {
 //     }
 // }
 
+const teamLabel = document.querySelector("#teamLabel");
+
 let pathname = window.location.pathname;
 
 pathname = pathname.slice(-6);
@@ -246,6 +248,12 @@ pathname = pathname.slice(-6);
 let Game = new Board1D(BoardDiv);
 
 let Communication = new ServerCommunication(Game, pathname);
+
+if(Communication.team == "white") {
+    teamLabel.textContent = "White Team";
+} else {
+    teamLabel.textContent = "Black Team";
+}
 
 Communication.requestBoard(pathname);
 
