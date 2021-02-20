@@ -26,6 +26,8 @@ class GameServers  {
         
     }
 
+// Server Functions
+
     createServer(ID = this.generateID(6)) {
         let Server = {};
         Server.board = new board.Board1D();
@@ -38,22 +40,21 @@ class GameServers  {
         return this.serverList[ID];
     }
 
+    getServerList() {
+        return this.serverList;
+    }
+
     setupJoinServer(socket){
         console.log(`[${socket.id}] Setted up JoinServer socket`);
         socket.on("joinServer", (req) => {
             let playerID = socket.id;
             let serverID = req.serverID;
 
-            this.joinPlayer(playerID, serverID);
+            this.joinPlayerToServer(playerID, serverID);
 
             console.log(`[${playerID}] Joined Server [${serverID}]`)
             this.socket.emit("joinedGame", {confirmation : true, serverID: serverID, playerID: playerID});
         })
-    }
-
-    joinPlayer(player_ID, server_ID) {
-        this.playerList.player_ID = this.serverList[server_ID];
-        this.serverList[server_ID].connectedPlayers.push(player_ID);
     }
 
     setupRequestBoard(socket) {
@@ -75,16 +76,17 @@ class GameServers  {
         })
     }
 
+    joinPlayerToServer(player_ID, server_ID) {
+        this.playerList.player_ID = this.serverList[server_ID];
+        this.serverList[server_ID].connectedPlayers.push(player_ID);
+    }
+
     generateID(length) {
         let ID = "";
         for (let i=0; i < length; i++) {
             ID += Math.floor(Math.random() * 10);
         }
         return ID;
-    }
-
-    getServerList() {
-        return this.serverList;
     }
 }
 
