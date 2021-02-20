@@ -106,7 +106,7 @@ class Board1D {
         this.cleanBoard();
         this.boardSquares.forEach(square => {
             if (piece_array[square.location] != null) {
-                this.addPiece(square.location, piece_array[square.location].name)
+                this.addPiece(square.location, piece_array[square.location].name, piece_array[square.location].team)
             }
         });
     }
@@ -170,9 +170,11 @@ function toggleSelect(square) {
         
     } else {
         if(square.board.selectedSquaresNumber >= 1) {
-            square.board.getSelected().piece.move(square.location);
+            if(square.board.boardSquares[square.board.getSelected().location].piece != null) {
+                Communication.requestMove(square.board.getSelected().location, square.location, Communication.serverID);
+            }
             square.board.cleanSelected();
-            return square.selected;
+            return;
         };
         square.board.selectedSquaresNumber += 1;
         square.squareDiv.classList.remove("darkSquare");
@@ -214,12 +216,18 @@ class ServerCommunication {
         });
     }
 
-    joinServer(serverID) {
-        this.socket.emit("joinServer", {serverID: serverID})
+    joinServer(serverID, team) {
+        this.socket.emit("joinServer", {serverID: serverID, team: team});
+        this.serverID = serverID;
     }
 
     requestBoard(serverID) {
         this.socket.emit("requestBoard", {serverID: serverID})
+    }
+
+    requestMove(prev_location, to_move_location, serverID) {
+        let move_package = this.board.boardSquares[prev_location].piece.requestMoveObject(to_move_location, serverID);
+        this.socket.emit("requestMove", move_package);
     }
 
     generateID(length) {

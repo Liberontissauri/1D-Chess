@@ -21,8 +21,8 @@ class Piece {
             this.square = null;
 
             // This is a horrible solution, but we basically temporarily move the piece to it's next position, check if there is a check,
-            // If there is one, we move the piece to its previous position and proceed, if there isn't a check, we update the images to 
-            // Display the moved pieces, and make the temporary movement permanent.
+            // If there is one, we move the piece to its previous position and proceed, if there isn't a check, we make the temporary
+            // movement permanent.
 
             board.boardSquares[location].piece = this;
             this.square = board.boardSquares[location];
@@ -33,8 +33,12 @@ class Piece {
 
                 board.boardSquares[prev_location].piece = this;
                 this.square = board.boardSquares[prev_location];
+
+                return "check";
             }
+            return false;
         }
+        return "illegal";
     }
 }
 

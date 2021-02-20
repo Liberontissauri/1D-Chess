@@ -40,6 +40,15 @@ class Piece {
         }
     }
 
+    requestMoveObject(location, serverID) {
+        let move_package = {};
+        move_package.move_Location = location;
+        move_package.prev_location = this.square.location;
+        move_package.serverID = serverID;
+
+        return move_package;
+    }
+
     updateTeamColour (img){
         if (this.team = "white") {
             classList.remove("blackPiece");
