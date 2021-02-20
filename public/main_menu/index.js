@@ -18,9 +18,11 @@ joinRoomButton.addEventListener("click", () => {
 switchTeamButton.addEventListener("click", () => {
     if(current_team == "white") {
         current_team = "black";
-        switchTeamButton.id = "blackTeamSwitchButton"
+        switchTeamButton.id = "blackTeamSwitchButton";
+        switchTeamButton.textContent = "Black Team";
     } else {
         current_team = "white";
-        switchTeamButton.id = "whiteTeamSwitchButton"
+        switchTeamButton.id = "whiteTeamSwitchButton";
+        switchTeamButton.textContent = "White Team";
     }
 })
