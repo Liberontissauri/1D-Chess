@@ -58,12 +58,20 @@ class GameServers  {
         Server.whiteTeam = null;
         Server.blackTeam = null;
 
+        Server.round = 1;
+
         Server.addPiece = function (location, piece_name, team) {
             Server.board.addPiece(location, piece_name, team);
             console.log(`[${"Server"}] Added ${piece_name} to the position ${location} on team ${team}`);
         }
         Server.makeMove = function (prev_location, to_move_location, team, playerID = "Player") {
             let pieceTeam = Server.board.boardSquares[prev_location].piece.team
+
+            if((Server.round % 2 != 0 && pieceTeam == "black") || (Server.round % 2 == 0 && pieceTeam == "white")) {
+                console.log(`[${playerID}] Tried to Move ${Server.board.boardSquares[prev_location].piece.name} from ${prev_location} to ${to_move_location} but it's not his turn [${Server.serverID}]`);
+                return;
+            }
+
             if(team == pieceTeam && Server.board.boardSquares[prev_location].piece != null && Server.board.boardSquares[to_move_location]) {
                 let tryMove = Server.board.boardSquares[prev_location].piece.move(to_move_location);
                 if(tryMove == "check"){
@@ -71,6 +79,7 @@ class GameServers  {
                 }else if(tryMove == "illegal"){
                     console.log(`[${playerID}] Tried to Move ${Server.board.boardSquares[prev_location].piece.name} from ${prev_location} to ${to_move_location} but the move is illegal [${Server.serverID}]`);
                 } else {
+                    Server.round  += 1;
                     console.log(`[${playerID}] Moved ${Server.board.boardSquares[to_move_location].piece.name} from ${prev_location} to ${to_move_location}, he's on the ${team} team [${Server.serverID}]`);
                 };
             } else {
