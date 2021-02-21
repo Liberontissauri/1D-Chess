@@ -19,7 +19,7 @@ class ServerCommunication {
 
     setupReceiveBoard() {
         this.socket.on("sendBoard", (req) => {
-            if (req.error == "None") {
+            if (req.serverID == this.serverID) {
                 this.board.updateBoard(req.piece_array);
             } else {
                 switch(req.error) {
@@ -35,6 +35,7 @@ class ServerCommunication {
     setupConfirmJoinServer() {
         this.socket.on("joinedGame", (req) => {
             this.team = req.team;
+            this.requestBoard(req.serverID);
             console.log(`[${req.playerID}] Successfully Joined Server [${req.serverID}]`)
         });
     }

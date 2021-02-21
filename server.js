@@ -117,12 +117,9 @@ class GameServers  {
             let playerID = socket.id;
             let serverID = req.serverID;
             let team = req.team;
-            console.log(team + " - " + this.serverList[serverID].whiteTeam + " - " + this.serverList[serverID].blackTeam)
             if(team == "white" && this.serverList[serverID].whiteTeam != null && this.serverList[serverID].blackTeam == null) {
-                console.log("changeBlack")
                 team = "black";
             } else if(team == "black" && this.serverList[serverID].blackTeam != null && this.serverList[serverID].whiteTeam == null) {
-                console.log("changeWhite")
                 team = "white";
             } else if(this.serverList[serverID].blackTeam != null && this.serverList[serverID].whiteTeam != null){
                 team = "spectator";

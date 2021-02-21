@@ -264,7 +264,6 @@ setTimeout(() => {
     } else {
         teamLabel.textContent = "Spectator Team"
     }
+    Communication.requestBoard(pathname);
 }, 600);
-
-Communication.requestBoard(pathname);
 
