@@ -1,6 +1,8 @@
 # 1D-Chess
 Have you ever heard of 1D Chess? As the name says, it's chess played in a single dimension, in a single row of squares.
 
+Check a live version here: <https://chess1d.herokuapp.com>
+
 # Goals
 - Implement the basis for piece movement - Done
 - Implement every piece of 1D chess - Current
