@@ -97,6 +97,20 @@ class Board1D {
         return piece_array;
     }
 
+    updateBoard(piece_array) {
+        this.cleanBoard();
+        this.boardSquares.forEach(square => {
+            if (piece_array[square.location] != null) {
+                this.addPiece(square.location, piece_array[square.location].name, piece_array[square.location].team)
+            }
+        });
+    }
+
+    cleanBoard() {
+        this.boardSquares.forEach(square => {
+            square.cleanSquare();
+        });
+    }
 }
 
 module.exports.Board1D = Board1D;

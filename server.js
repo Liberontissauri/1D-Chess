@@ -79,6 +79,20 @@ class GameServers  {
         }
         this.serverList[ID] = Server;
 
+        Server.addPiece(0, "king", "white");
+        
+        Server.addPiece(2, "rook", "white");
+        Server.addPiece(3, "bishop", "white");
+        Server.addPiece(4, "knight", "white");
+        Server.addPiece(5, "pawn", "white");
+
+        Server.addPiece(10, "pawn", "black");
+        Server.addPiece(11, "knight", "black");
+        Server.addPiece(12, "bishop", "black");
+        Server.addPiece(13, "rook", "black");
+
+        Server.addPiece(15, "king", "black");
+
         console.log(`[${"User"}] Server Created [${Server.serverID}]`);
     }
 
@@ -205,14 +219,6 @@ class GameServers  {
 }
 
 let Game = new GameServers(io);
-
-Game.createServer("123456");
-
-Game.getServer("123456").addPiece(1,"bishop", "white");
-Game.getServer("123456").addPiece(8,"knight", "black");
-
-Game.getServer("123456").addPiece(0,"king", "white");
-Game.getServer("123456").addPiece(15,"king", "black");
 
 
 

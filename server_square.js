@@ -11,6 +11,14 @@ class Square{
         return this.location%2 != 0;
     }
 
+    cleanSquare() {
+        if(this.piece != null) {
+            this.piece.square = null;
+            this.piece = null;
+        }
+    }
+
+
 }
 
 module.exports.Square = Square
