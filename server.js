@@ -141,7 +141,7 @@ class GameServers  {
             this.joinPlayerToServer(playerID, serverID, team, socket);
 
             console.log(`[${playerID}] Joined Server [${serverID}]`)
-            this.socket.emit("joinedGame", {confirmation : true, serverID: serverID, playerID: playerID, team:team});
+            this.socket.in(this.formatRoomID(serverID)).emit("joinedGame", {confirmation : true, serverID: serverID, playerID: playerID, team:team});
         })
     }
 
@@ -154,12 +154,12 @@ class GameServers  {
 
                 let board = this.serverList[serverID].board.getPieces()
                 console.log(`[${playerID}] Requested Board from Server [${serverID}]`)
-                this.socket.emit("sendBoard", {error: "None", piece_array: board, serverID: serverID, playerID: playerID});
+                this.socket.in(this.formatRoomID(serverID)).emit("sendBoard", {error: "None", piece_array: board, serverID: serverID, playerID: "All Players"});
 
             } else {
 
                 console.log(`[${playerID}] Tried to Request Board from Server But it's not Connected [${serverID}]`)
-                this.socket.emit("sendBoard", {error: "Not in Server", serverID: serverID, playerID: playerID});
+               // this.socket.in(this.formatRoomID(serverID)).emit("sendBoard", {error: "None", piece_array: board, serverID: serverID, playerID: "All Players"});
 
             }
 
