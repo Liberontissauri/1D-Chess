@@ -240,6 +240,8 @@ function toggleSelect(square) {
 // }
 
 const teamLabel = document.querySelector("#teamLabel");
+const serverIdText = document.querySelector("#serverIdText");
+const serverRoundText = document.querySelector("#serverRoundText");
 
 let pathname = window.location.pathname;
 
@@ -251,9 +253,11 @@ if(pathname.includes("black")) {
 
 pathname = pathname.slice(-6);
 
+serverIdText.textContent = "Server ID: " + pathname;
+
 let Game = new Board1D(BoardDiv);
 
-let Communication = new ServerCommunication(Game, pathname, team);
+let Communication = new ServerCommunication(Game, pathname, team, serverRoundText);
 
 // We use a timeout because the team response takes some time to reach the client
 setTimeout(() => {
@@ -265,5 +269,5 @@ setTimeout(() => {
         teamLabel.textContent = "Spectator Team"
     }
     Communication.requestBoard(pathname);
-}, 600);
+}, 100);
 

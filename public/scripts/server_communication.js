@@ -1,8 +1,10 @@
 class ServerCommunication {
-    constructor(board, serverID = null, team = "white") {
+    constructor(board, serverID = null, team = "white", serverRoundText = null) {
         this.socket = io();
         this.board = board;
         this.team = team;
+
+        this.serverRoundText = serverRoundText;
 
         this.clientID = this.socket.id;
 
@@ -20,6 +22,12 @@ class ServerCommunication {
     setupReceiveBoard() {
         this.socket.on("sendBoard", (req) => {
             if (req.serverID == this.serverID) {
+                console.log(req);
+                if(req.round%2 == 0) {
+                    this.serverRoundText.textContent = "Turn: Black";
+                } else {
+                    this.serverRoundText.textContent = "Turn: White";
+                }
                 this.board.updateBoard(req.piece_array);
             } else {
                 switch(req.error) {

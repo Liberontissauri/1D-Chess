@@ -150,16 +150,17 @@ class GameServers  {
         socket.on("requestBoard", (req) => {
             let playerID = socket.id;
             let serverID = req.serverID;
+            let round = this.getServer(serverID).round;
             if(this.serverList[serverID].connectedPlayers.includes(playerID)) {
 
                 let board = this.serverList[serverID].board.getPieces()
                 console.log(`[${playerID}] Requested Board from Server [${serverID}]`)
-                this.socket.in(this.formatRoomID(serverID)).emit("sendBoard", {error: "None", piece_array: board, serverID: serverID, playerID: "All Players"});
+                this.socket.in(this.formatRoomID(serverID)).emit("sendBoard", {error: "None", piece_array: board, serverID: serverID, playerID: "All Players", round: round});
 
             } else {
 
                 console.log(`[${playerID}] Tried to Request Board from Server But it's not Connected [${serverID}]`)
-               // this.socket.in(this.formatRoomID(serverID)).emit("sendBoard", {error: "None", piece_array: board, serverID: serverID, playerID: "All Players"});
+                this.socket.in(this.formatRoomID(serverID)).emit("sendBoard", {error: "None", piece_array: null, serverID: serverID, playerID: "All Players", round: round});
 
             }
 
@@ -198,9 +199,10 @@ class GameServers  {
     }
 
     sendBoardToPlayers(serverID) {
-        let board = this.serverList[serverID].board.getPieces()
+        let board = this.serverList[serverID].board.getPieces();
+        let round = this.getServer(serverID).round;
         console.log(`[${"All Players"}] Sent board to every player on the room [${serverID}]`);
-        this.socket.in(this.formatRoomID(serverID)).emit("sendBoard", {error: "None", piece_array: board, serverID: serverID, playerID: "All Players"});
+        this.socket.in(this.formatRoomID(serverID)).emit("sendBoard", {error: "None", piece_array: board, serverID: serverID, playerID: "All Players", round: round});
     }
 
     joinPlayerToServer(playerID, serverID, playerTeam, socket) {
