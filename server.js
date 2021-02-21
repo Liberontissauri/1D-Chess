@@ -14,6 +14,10 @@ app.use(express.static(path.join(__dirname + '/public')));
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname + '/public/main_menu/index.html'));
 })
+app.post("/create/room/:room", (req, res) => {
+    let room = req.params.room;
+    Game.createServer(`${room}`);
+})
 
 app.get("/room/:team/:room", (req, res) => {
     let serverID = req.params.room;

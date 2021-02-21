@@ -5,10 +5,14 @@ const switchTeamButton = document.querySelector("#whiteTeamSwitchButton");
 
 let current_team = "white";
 
-let Communication = new ServerCommunication(null);
-
 createRoomButton.addEventListener("click", () => {
-    inputCodeField.value = Communication.createServer();
+    let xhttp = new XMLHttpRequest();
+    let serverID = generateID(6);
+    let url = "/create/room/" + serverID;
+    console.log(url)
+    xhttp.open("POST", url);
+    xhttp.send();
+    inputCodeField.value = serverID;
 })
 
 joinRoomButton.addEventListener("click", () => {
@@ -26,3 +30,11 @@ switchTeamButton.addEventListener("click", () => {
         switchTeamButton.textContent = "White Team";
     }
 })
+
+function generateID(length) {
+    let ID = "";
+    for (let i=0; i < length; i++) {
+        ID += Math.floor(Math.random() * 10);
+    }
+    return ID;
+}
