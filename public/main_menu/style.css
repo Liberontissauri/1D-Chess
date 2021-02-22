@@ -21,16 +21,17 @@ body {
 #Title {
     color: rgb(75, 75, 75);
 
-    font-size: 40pt;
+    font-size: 70pt;
     font-family: 'Montserrat', sans-serif;
-    margin-bottom: 30px;
+    margin-top: 140px;
 }
 
 #inputCodeField {
     width: 700px;
     height: 80px;
 
-    margin-bottom: 30px;
+    margin-top: 100px;
+    margin-bottom: 60px;
 
     font-size: 30pt;
 
